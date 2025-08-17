@@ -25,8 +25,9 @@ COPY . /var/www
 # Clear any prebuilt cache
 RUN rm -rf bootstrap/cache/*.php
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+# Ensure Laravel storage/framework subdirs exist
+RUN mkdir -p /var/www/storage/framework/{cache,sessions,views,testing} \
+    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Expose Render port
@@ -34,3 +35,4 @@ EXPOSE 10000
 
 # Run Laravel using built-in server
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"]
+
