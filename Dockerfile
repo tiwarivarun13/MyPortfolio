@@ -43,9 +43,13 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
 
 
 # expose web port (helps docs, not strictly required)
-EXPOSE 10000
+# EXPOSE 10000
 
-# ensure CMD uses Render's $PORT env (falls back to 10000 locally)
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT:-10000}"]
+# # ensure CMD uses Render's $PORT env (falls back to 10000 locally)
+# CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT:-10000}"]
+
+
+EXPOSE 10000
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"]
 
 
