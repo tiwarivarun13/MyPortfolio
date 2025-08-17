@@ -31,7 +31,16 @@ RUN mkdir -p /var/www/storage/framework/{cache,sessions,views,testing} \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Expose Render port
+
+
 EXPOSE 10000
+
+# Copy entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Use entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Run Laravel using built-in server
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"]
