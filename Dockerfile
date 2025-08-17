@@ -37,7 +37,15 @@ RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoload
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
  && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-EXPOSE 9000
-# CMD ["php-fpm"]
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
+# EXPOSE 9000
+# # CMD ["php-fpm"]
+# CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
+
+
+# expose web port (helps docs, not strictly required)
+EXPOSE 10000
+
+# ensure CMD uses Render's $PORT env (falls back to 10000 locally)
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT:-10000}"]
+
 
