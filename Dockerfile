@@ -33,6 +33,14 @@ RUN rm -rf bootstrap/cache/*.php
 # Re-run composer scripts to generate optimized autoloads
 RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader -vvv
 
+
+# Run artisan setup tasks
+RUN php artisan config:clear \
+ && php artisan config:cache \
+ && php artisan route:cache \
+ && php artisan view:cache \
+ && php artisan storage:link || true
+
 # Permissions for Laravel
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
  && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
